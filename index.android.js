@@ -9,6 +9,7 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  TextInput,
   View,
   Image,
   Platform
@@ -17,7 +18,9 @@ import {
 class Greeting extends Component {
   constructor(props) {
       super(props);
-      this.state = {showText: true};
+      this.state = {
+        showText: true
+      };
 
       // Toggle the state every second
       // setInterval(() => {
@@ -63,15 +66,31 @@ class Greeting extends Component {
 }
 
 export default class AwesomeProject extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: ''
+    };
+  }
+
   render() {
     let pic = {
       uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
     };
     return (
-      <View style={styles.container}>
-        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
+      <View style={{padding: 10}}>
+        <TextInput
+          style={{height: 40}}
+          placeholder="Type here to translate!"
+          onChangeText={(text) => {
+            this.setState({text});
+            console.log(this.state.text);
+          }}
+        />
+        <Text style={{padding: 10, fontSize: 42}}>
+          //{this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
+          {this.state.text}
+        </Text>
       </View>
     );
   }
@@ -79,8 +98,10 @@ export default class AwesomeProject extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
+    margin: 50,
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
