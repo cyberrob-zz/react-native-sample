@@ -9,90 +9,81 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  TextInput,
   View,
   Image,
-  Platform
+  Alert,
+  Button
 } from 'react-native';
+//import { createStore } from 'redux'
 
-class Greeting extends Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-        showText: true
-      };
+// Define the initial state of our store
+//const initialState = { count: 0}
 
-      // Toggle the state every second
-      // setInterval(() => {
-      //   this.setState({ showText: !this.state.showText });
-      // }, 1000);
-  }
+// Define a action type
+// const types = {
+//   INCREMENT: 'INCREMENT',
+// }
 
-  componentWillMount() {
-    console.log((Platform.OS === 'ios')?'iOS':'Android');
-    console.log('componentWillMount');
-  }
+// Define a reducer for processing actions into store
+// const reducer = (state, action) => {
+//   if (action.type === types.INCREMENT) {
+//     return {count: state.count + 1}
+//   }
+//   return state;
+// }
+//
+// const store = createStore(reducer, initialState)
 
-  render () {
-    let display = this.state.showText ? 'Hello '+ this.props.name +'!': ' ';
-    return (
-      <Text style={{fontSize: 30, color: 'red'}}>{display}</Text>
-    );
-  }
+let count = 0
 
-  componentDidMount() {
-    console.log('componentDidMount');
-  }
-
-  componentWillReceiveProps() {
-    console.log('componentWillReceiveProps');
-  }
-
-  shouldComponentUpdate() {
-    console.log('shouldComponentUpdate');
-  }
-
-  componentWillUpdate() {
-    console.log('componentWillUpdate');
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-
-  componentWillUnmount() {
-    console.log('componentWillUnmount');
-  }
-}
 
 export default class AwesomeProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ''
+      count: 0
     };
   }
 
   render() {
-    let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
     return (
-      <View style={{padding: 10}}>
-        <TextInput
-          style={{height: 40}}
-          placeholder="Type here to translate!"
-          onChangeText={(text) => {
-            this.setState({text});
-            console.log(this.state.text);
-          }}
-        />
-        <Text style={{padding: 10, fontSize: 42}}>
-          //{this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
-          {this.state.text}
-        </Text>
+      <View style={{flex: 1, padding: 22}}>
+        <Button
+          style={{margin: 10}}
+          onPress={this.onButtonPress}
+          title="Press Me"/>
+        <Button
+          style={{margin: 10}}
+          onPress={this.onResetPress}
+          title="Reset"/>
+        <Text style={styles.welcome}>Click counts: {this.state.count}</Text>
       </View>
     );
+  }
+
+  onButtonPress = () => {
+    this.setState({count: this.state.count + 1}, function() {
+        console.log('Button clicked ' + this.state.count + ' times');
+        if(this.state.count === 5) {
+          Alert.alert(
+            'Limit of 5 reached.',
+            'Your trial period is finished!',
+            [
+              {text: 'OK', onPress: () => this.onResetPress()},
+            ],
+            { cancelable: false },
+            { onDismiss: () => { console.log('Can\'t be dismissed.')}}
+          );
+        }
+    });
+
+    //Alert.alert('Button clicked ' + count + ' times');
+    //store.dispatch({type: types.INCREMENT})
+  }
+
+  onResetPress = () => {
+    this.setState({count: 0});
+    console.log('Count rest to 0');
   }
 }
 
