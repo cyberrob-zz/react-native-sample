@@ -14,35 +14,38 @@ import {
   Alert,
   Button
 } from 'react-native';
-//import { createStore } from 'redux'
+import { createStore } from 'redux'
 
 // Define the initial state of our store
-//const initialState = { count: 0}
+const initialState = { count: 0}
 
 // Define a action type
-// const types = {
-//   INCREMENT: 'INCREMENT',
-// }
+const types = {
+  INCREMENT: 'INCREMENT',
+}
 
 // Define a reducer for processing actions into store
-// const reducer = (state, action) => {
-//   if (action.type === types.INCREMENT) {
-//     return {count: state.count + 1}
-//   }
-//   return state;
-// }
-//
-// const store = createStore(reducer, initialState)
+const reducer = (state, action) => {
+  if (action.type === types.INCREMENT) {
+    return {count: state.count + 1}
+  }
+  return state;
+}
 
-let count = 0
+const store = createStore(reducer, initialState)
 
+//let count = 0
+
+store.dispatch({type: types.INCREMENT});
+store.dispatch({type: types.INCREMENT});
+store.dispatch({type: types.INCREMENT});
 
 export default class AwesomeProject extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0
-    };
+    // this.state = {
+    //   count: 0
+    // };
   }
 
   render() {
@@ -52,38 +55,33 @@ export default class AwesomeProject extends Component {
           style={{margin: 10}}
           onPress={this.onButtonPress}
           title="Press Me"/>
-        <Button
-          style={{margin: 10}}
-          onPress={this.onResetPress}
-          title="Reset"/>
-        <Text style={styles.welcome}>Click counts: {this.state.count}</Text>
+
+        <Text style={styles.welcome}>Click counts: {store.getState().count}</Text>
       </View>
     );
   }
 
   onButtonPress = () => {
-    this.setState({count: this.state.count + 1}, function() {
-        console.log('Button clicked ' + this.state.count + ' times');
-        if(this.state.count === 5) {
-          Alert.alert(
-            'Limit of 5 reached.',
-            'Your trial period is finished!',
-            [
-              {text: 'OK', onPress: () => this.onResetPress()},
-            ],
-            { cancelable: false },
-            { onDismiss: () => { console.log('Can\'t be dismissed.')}}
-          );
-        }
-    });
+    console.log('button cliced.');
+    store.dispatch({type: types.INCREMENT});
+    // this.setState({count: this.state.count + 1}, function() {
+    //     console.log('Button clicked ' + this.state.count + ' times');
+    //     if(this.state.count === 5) {
+    //       Alert.alert(
+    //         'Limit of 5 reached.',
+    //         'Your trial period is finished!',
+    //         [
+    //           {text: 'OK', onPress: () => this.onResetPress()},
+    //         ],
+    //         { cancelable: false },
+    //         { onDismiss: () => { console.log('Can\'t be dismissed.'); }}
+    //       );
+    //     }
+    // });
+
 
     //Alert.alert('Button clicked ' + count + ' times');
     //store.dispatch({type: types.INCREMENT})
-  }
-
-  onResetPress = () => {
-    this.setState({count: 0});
-    console.log('Count rest to 0');
   }
 }
 
